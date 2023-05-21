@@ -11,10 +11,10 @@ do
 
     # Version
     echo "2" >> $LOG_DIR/v/$filename
-    # Socket
-    ss -tuapn >> $LOG_DIR/s/$filename
     # Process
     ps -eo pid,ppid,user,%cpu,rss,vsz,tty,stat,start,time,cmd >> $LOG_DIR/p/$filename
+    # Socket
+    ss -tuapn >> $LOG_DIR/s/$filename
     # IO
     iotop -boPn 1 >> $LOG_DIR/io/$filename
 
