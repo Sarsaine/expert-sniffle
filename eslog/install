@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+cp -f ./eslog.service /etc/systemd/system/eslog.service
+cp -f ./eslog /usr/local/bin/eslog
+
+chmod +x /usr/local/bin/eslog
+
+systemctl enable --now eslog.service

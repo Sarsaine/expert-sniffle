@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Create the log directory
+LOG_DIR="/var/log/eslog"
+mkdir -p $LOG_DIR/s $LOG_DIR/p $LOG_DIR/io $LOG_DIR/v
+
+while [ true ]
+do
+    filename=$(date +%s).log
+    start=$(date +%s%3N)
+
+    # Version
+    echo "2" >> $LOG_DIR/v/$filename
+    # Socket
+    ss -tuapn >> $LOG_DIR/s/$filename
+    # Process
+    ps -eo pid,ppid,user,%cpu,rss,vsz,tty,stat,start,time,cmd >> $LOG_DIR/p/$filename
+    # IO
+    iotop -boPn 1 >> $LOG_DIR/io/$filename
+
+    # Calculate the duration of the script and sleep for the remainder of the second
+    end=$(date +%s%3N)
+    duration=$(echo "scale=3; ($end - $start) / 1000" | bc)
+    sleep_time=$(echo "scale=3; 1 - $duration" | bc)
+
+    # Don't sleep if the duration is greater than 1 second
+    if (( $(echo "$sleep_time > 0" | bc -l) )); then
+        sleep $sleep_time
+    fi
+done
