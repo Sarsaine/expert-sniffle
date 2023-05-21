@@ -1,0 +1,7 @@
+{
+  "name": "ExpertSniffle",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
